@@ -1,0 +1,26 @@
+frontend:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/app/**'
+      - 'src/components/**'
+      - '**/*.css'
+      - 'tailwind.config.*'
+
+backend:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/lib/**'
+      - 'src/server/**'
+      - 'supabase/**'
+
+documentation:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/*.md'
+      - 'docs/**'
+
+AI:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/lib/ai/**'
+      - 'src/app/api/ai/**'

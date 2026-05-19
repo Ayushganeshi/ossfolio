@@ -1,0 +1,134 @@
+const GITHUB_GRAPHQL_URL = "https://api.github.com/graphql";
+
+async function githubGraphQL<T>(
+  query: string,
+  variables: Record<string, unknown>,
+  token: string
+): Promise<T> {
+  const res = await fetch(GITHUB_GRAPHQL_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ query, variables }),
+    next: { revalidate: 3600 }, // cache for 1 hour
+  });
+
+  if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+  const json = await res.json();
+  if (json.errors) throw new Error(json.errors[0].message);
+  return json.data as T;
+}
+
+export const CONTRIBUTOR_QUERY = `
+  query ContributorProfile($login: String!) {
+    user(login: $login) {
+      login
+      name
+      bio
+      avatarUrl
+      url
+      websiteUrl
+      twitterUsername
+      location
+      followers { totalCount }
+      following { totalCount }
+      repositories(first: 100, ownerAffiliations: OWNER, isFork: false, orderBy: { field: STARGAZERS, direction: DESC }) {
+        totalCount
+        nodes {
+          name
+          description
+          stargazerCount
+          forkCount
+          primaryLanguage { name color }
+          url
+        }
+      }
+      contributionsCollection {
+        totalCommitContributions
+        totalPullRequestContributions
+        totalIssueContributions
+        totalPullRequestReviewContributions
+        contributionCalendar {
+          totalContributions
+          weeks {
+            contributionDays {
+              contributionCount
+              date
+              color
+            }
+          }
+        }
+      }
+      organizations(first: 20) {
+        nodes {
+          login
+          name
+          avatarUrl
+          url
+        }
+      }
+    }
+  }
+`;
+
+export interface GitHubContributor {
+  login: string;
+  name: string | null;
+  bio: string | null;
+  avatarUrl: string;
+  url: string;
+  websiteUrl: string | null;
+  twitterUsername: string | null;
+  location: string | null;
+  followers: { totalCount: number };
+  following: { totalCount: number };
+  repositories: {
+    totalCount: number;
+    nodes: {
+      name: string;
+      description: string | null;
+      stargazerCount: number;
+      forkCount: number;
+      primaryLanguage: { name: string; color: string } | null;
+      url: string;
+    }[];
+  };
+  contributionsCollection: {
+    totalCommitContributions: number;
+    totalPullRequestContributions: number;
+    totalIssueContributions: number;
+    totalPullRequestReviewContributions: number;
+    contributionCalendar: {
+      totalContributions: number;
+      weeks: {
+        contributionDays: {
+          contributionCount: number;
+          date: string;
+          color: string;
+        }[];
+      }[];
+    };
+  };
+  organizations: {
+    nodes: {
+      login: string;
+      name: string | null;
+      avatarUrl: string;
+      url: string;
+    }[];
+  };
+}
+
+export async function fetchContributorProfile(
+  login: string,
+  token: string
+): Promise<GitHubContributor> {
+  const data = await githubGraphQL<{ user: GitHubContributor }>(
+    CONTRIBUTOR_QUERY,
+    { login },
+    token
+  );
+  return data.user;
+}
