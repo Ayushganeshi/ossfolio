@@ -1,28 +1,44 @@
-import Link from "next/link";
+"use client";
+
+import { useState } from "react";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
+import { Hero } from "@/components/home/Hero";
+import { Features } from "@/components/home/Features";
+import { HowItWorks } from "@/components/home/HowItWorks";
+import { CTABanner } from "@/components/home/CTABanner";
+import { AuthModal } from "@/components/auth/AuthModal";
 
 export default function HomePage() {
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<"signin" | "signup">("signin");
+
+  function openAuth(mode: "signin" | "signup") {
+    setAuthMode(mode);
+    setAuthOpen(true);
+  }
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background px-4 text-center">
-      <h1 className="text-5xl font-bold tracking-tight text-foreground sm:text-6xl">
-        OSSfolio
-      </h1>
-      <p className="mt-4 text-xl text-muted-foreground">
-        Your open-source identity, beyond GitHub.
-      </p>
-      <div className="mt-10 flex gap-4">
-        <Link
-          href="/api/auth/signin"
-          className="rounded-md bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow hover:opacity-90 transition-opacity"
-        >
-          Sign in with GitHub
-        </Link>
-        <Link
-          href="/explore"
-          className="rounded-md border border-border px-6 py-3 text-sm font-semibold text-foreground hover:bg-accent transition-colors"
-        >
-          Explore profiles
-        </Link>
-      </div>
-    </main>
+    <>
+      <Navbar
+        onSignIn={() => openAuth("signin")}
+        onGetStarted={() => openAuth("signup")}
+      />
+
+      <main>
+        <Hero onGetStarted={() => openAuth("signup")} />
+        <Features />
+        <HowItWorks />
+        <CTABanner onGetStarted={() => openAuth("signup")} />
+      </main>
+
+      <Footer />
+
+      <AuthModal
+        open={authOpen}
+        onClose={() => setAuthOpen(false)}
+        defaultMode={authMode}
+      />
+    </>
   );
 }

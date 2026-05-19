@@ -1,55 +1,66 @@
 @import "tailwindcss";
 
-:root {
-  --background: 0 0% 100%;
-  --foreground: 224 71.4% 4.1%;
-  --card: 0 0% 100%;
-  --card-foreground: 224 71.4% 4.1%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 224 71.4% 4.1%;
-  --primary: 262.1 83.3% 57.8%;
-  --primary-foreground: 210 20% 98%;
-  --secondary: 220 14.3% 95.9%;
-  --secondary-foreground: 220.9 39.3% 11%;
-  --muted: 220 14.3% 95.9%;
-  --muted-foreground: 220 8.9% 46.1%;
-  --accent: 220 14.3% 95.9%;
-  --accent-foreground: 220.9 39.3% 11%;
-  --destructive: 0 84.2% 60.2%;
-  --destructive-foreground: 210 20% 98%;
-  --border: 220 13% 91%;
-  --input: 220 13% 91%;
-  --ring: 262.1 83.3% 57.8%;
-  --radius: 0.5rem;
-}
+@theme {
+  /* Brand */
+  --color-primary: #3ecf8e;
+  --color-primary-deep: #24b47e;
+  --color-primary-soft: #4ade80;
+  --color-on-primary: #171717;
 
-.dark {
-  --background: 224 71.4% 4.1%;
-  --foreground: 210 20% 98%;
-  --card: 224 71.4% 4.1%;
-  --card-foreground: 210 20% 98%;
-  --popover: 224 71.4% 4.1%;
-  --popover-foreground: 210 20% 98%;
-  --primary: 263.4 70% 50.4%;
-  --primary-foreground: 210 20% 98%;
-  --secondary: 215 27.9% 16.9%;
-  --secondary-foreground: 210 20% 98%;
-  --muted: 215 27.9% 16.9%;
-  --muted-foreground: 217.9 10.6% 64.9%;
-  --accent: 215 27.9% 16.9%;
-  --accent-foreground: 210 20% 98%;
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 210 20% 98%;
-  --border: 215 27.9% 16.9%;
-  --input: 215 27.9% 16.9%;
-  --ring: 263.4 70% 50.4%;
+  /* Text */
+  --color-ink: #171717;
+  --color-ink-secondary: #212121;
+  --color-ink-mute: #707070;
+  --color-ink-mute-2: #9a9a9a;
+  --color-ink-faint: #b2b2b2;
+  --color-on-dark: #ffffff;
+
+  /* Surfaces */
+  --color-canvas: #ffffff;
+  --color-canvas-soft: #fafafa;
+  --color-canvas-night: #1c1c1c;
+  --color-canvas-night-soft: #202020;
+
+  /* Borders */
+  --color-hairline: #dfdfdf;
+  --color-hairline-strong: #c7c7c7;
+  --color-hairline-cool: #ededed;
+
+  /* Accents (charts / logos only — never buttons) */
+  --color-accent-purple: #6b01c2;
+  --color-accent-violet: #644fc1;
+  --color-accent-yellow: #ffdb13;
+  --color-accent-tomato: #ff2201;
+  --color-accent-pink: #c7007e;
+
+  /* Border radius */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+
+  /* Font */
+  --font-sans: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
 }
 
 * {
-  border-color: hsl(var(--border));
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
+  background-color: #ffffff;
+  color: #171717;
+  font-family: "Inter", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
 }

@@ -1,6 +1,6 @@
 # Contributing to OSSfolio
 
-First off — thank you for taking the time to contribute! OSSfolio is an open source project built by contributors like you. Every PR, issue, and discussion counts.
+Thank you for taking the time to contribute. OSSfolio is built entirely by contributors like you — every PR, issue, and discussion makes it better.
 
 ---
 
@@ -8,12 +8,19 @@ First off — thank you for taking the time to contribute! OSSfolio is an open s
 
 - [Code of Conduct](#code-of-conduct)
 - [How Can I Contribute?](#how-can-i-contribute)
-- [Getting Started (Local Setup)](#getting-started-local-setup)
+- [Local Setup](#local-setup)
+  - [1. Fork and clone](#1-fork-and-clone)
+  - [2. Install dependencies](#2-install-dependencies)
+  - [3. Set up the database](#3-set-up-the-database)
+  - [4. Environment variables](#4-environment-variables)
+  - [5. Run the dev server](#5-run-the-dev-server)
+- [Database — Making Schema Changes](#database--making-schema-changes)
 - [Branch Naming](#branch-naming)
 - [Commit Messages](#commit-messages)
 - [Pull Request Process](#pull-request-process)
 - [Issue Guidelines](#issue-guidelines)
 - [Good First Issues](#good-first-issues)
+- [Questions](#questions)
 
 ---
 
@@ -25,67 +32,150 @@ This project follows our [Code of Conduct](CODE_OF_CONDUCT.md). By participating
 
 ## How Can I Contribute?
 
-### Report Bugs
-Open an issue using the **Bug Report** template. Include steps to reproduce, expected behavior, and screenshots if relevant.
+### Fix a bug
+Open issues labelled [`bug`](../../issues?q=label%3Abug+is%3Aopen). Comment to claim one before starting.
 
-### Suggest Features
+### Build a feature
+Open issues labelled [`enhancement`](../../issues?q=label%3Aenhancement+is%3Aopen). Comment explaining your approach and wait to be assigned.
+
+### Improve docs
+Typos, unclear sections, missing info — no issue needed for small doc fixes. Just open a PR.
+
+### Report a bug
+Open an issue using the **Bug Report** template. Include steps to reproduce, expected behaviour, and screenshots if relevant.
+
+### Suggest a feature
 Open an issue using the **Feature Request** template. Describe the problem it solves, not just what you want built.
-
-### Fix Issues
-Browse [open issues](../../issues) and look for ones labelled:
-- `good first issue` — great if this is your first contribution
-- `help wanted` — open for anyone to pick up
-- `bug` — confirmed bugs needing a fix
-
-Comment on the issue to claim it before starting work.
-
-### Improve Docs
-Typos, unclear sections, missing examples — all welcome. No issue needed for small doc fixes.
 
 ---
 
-## Getting Started (Local Setup)
+## Local Setup
 
-> The full setup guide will be added here once the tech stack is chosen. Watch this space.
+### 1. Fork and clone
 
-1. Fork the repository
-2. Clone your fork:
-   ```bash
-   git clone https://github.com/<your-username>/ossfolio.git
-   cd ossfolio
-   ```
-3. Install dependencies:
-   ```bash
-   # instructions coming soon
-   ```
-4. Create a `.env` file from the example:
-   ```bash
-   cp .env.example .env
-   ```
-5. Start the dev server:
-   ```bash
-   # instructions coming soon
-   ```
+Fork the repo on GitHub, then clone your fork:
+
+```bash
+git clone https://github.com/<your-username>/ossfolio.git
+cd ossfolio
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Set up the database
+
+OSSfolio uses [Supabase](https://supabase.com) (PostgreSQL). Pick whichever option works for you.
+
+---
+
+#### Option A — Supabase Dashboard (easiest, no extra tools)
+
+This is the recommended path for most contributors.
+
+1. Create a free project at [supabase.com](https://supabase.com)
+2. In your project, go to **SQL Editor → New query**
+3. Open [`supabase/schema.sql`](supabase/schema.sql) from this repo
+4. Copy the entire contents, paste into the editor, and click **Run**
+5. All tables and row-level security policies are created — you're done
+
+---
+
+#### Option B — Supabase CLI (local Docker)
+
+Use this if you want a fully local setup without a cloud Supabase project. Requires [Docker](https://www.docker.com) to be running.
+
+```bash
+# Install the Supabase CLI
+npm install -g supabase
+
+# Start a local Supabase instance
+supabase start
+
+# Apply all migrations and load sample seed data
+supabase db reset
+```
+
+`supabase db reset` runs every file inside `supabase/migrations/` in timestamp order, then runs `supabase/seed.sql` to load sample data. Your local database is fully ready.
+
+The CLI will print your local project URL and anon key — use those in `.env.local`.
+
+---
+
+### 4. Environment variables
+
+```bash
+cp .env.example .env.local
+```
+
+Open `.env.local` and fill in:
+
+| Variable | Where to find it |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase dashboard → Project Settings → API |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase dashboard → Project Settings → API |
+| `SUPABASE_SERVICE_ROLE_KEY` | Supabase dashboard → Project Settings → API |
+| `NEXTAUTH_SECRET` | Run `openssl rand -base64 32` in your terminal |
+| `NEXTAUTH_URL` | `http://localhost:3000` for local dev |
+
+GitHub OAuth is configured directly inside Supabase — go to **Authentication → Providers → GitHub** in your Supabase dashboard and enter your GitHub OAuth app credentials there. You do not need to add them to `.env.local`.
+
+---
+
+### 5. Run the dev server
+
+```bash
+npm run dev
+```
+
+Open `http://localhost:3000`.
+
+---
+
+## Database — Making Schema Changes
+
+The database schema lives in two places that are always kept in sync:
+
+| File | Purpose |
+|---|---|
+| `supabase/schema.sql` | Single master file — paste this into Supabase dashboard to set up everything at once |
+| `supabase/migrations/` | Individual migration files — used by the Supabase CLI, one file per change |
+
+### If your PR changes the database schema
+
+**Do not edit existing migration files.** They are immutable once merged — changing them breaks other contributors' local setups.
+
+Instead, create a new migration file:
+
+```bash
+supabase migration new describe_your_change
+```
+
+This creates `supabase/migrations/<timestamp>_describe_your_change.sql`. Write your SQL there.
+
+Then update `supabase/schema.sql` to reflect the change so dashboard users stay in sync. Both files must be included in your PR.
+
+Reviewers will check the SQL diff before merging.
 
 ---
 
 ## Branch Naming
 
-Use the format: `type/short-description`
+Use the format `type/short-description`:
 
-| Type | When to use |
-|------|-------------|
+| Prefix | When to use |
+|---|---|
 | `feat/` | New feature |
 | `fix/` | Bug fix |
 | `docs/` | Documentation only |
-| `refactor/` | Code change that isn't a fix or feature |
-| `chore/` | Tooling, CI, dependencies |
-| `test/` | Adding or fixing tests |
+| `refactor/` | Code cleanup, no behaviour change |
+| `chore/` | Tooling, CI, config |
+| `test/` | Tests only |
 
-Examples:
-- `feat/contribution-heatmap`
-- `fix/github-api-rate-limit`
-- `docs/setup-guide`
+Examples: `feat/contribution-heatmap`, `fix/github-api-rate-limit`, `docs/supabase-setup`
 
 ---
 
@@ -94,56 +184,56 @@ Examples:
 Follow [Conventional Commits](https://www.conventionalcommits.org/):
 
 ```
-<type>(<scope>): <short summary>
+type(scope): short summary under 72 chars
 ```
 
 Examples:
 - `feat(profile): add merged PR count display`
-- `fix(api): handle GitHub API rate limit gracefully`
-- `docs(contributing): add branch naming guide`
-
-Keep the summary under 72 characters. Use the body for context if needed.
+- `fix(api): handle GitHub rate limit gracefully`
+- `docs(contributing): clarify supabase setup options`
+- `chore(db): add leaderboard migration`
 
 ---
 
 ## Pull Request Process
 
-1. Make sure your branch is up to date with `main` before opening a PR.
-2. Fill out the PR template fully — incomplete PRs may be closed.
-3. Link the issue your PR closes using `Closes #<issue-number>` in the description.
-4. Keep PRs focused — one logical change per PR. Avoid bundling unrelated fixes.
-5. All PRs require at least one review before merge.
-6. Once approved, a maintainer will merge your PR.
+1. Make sure your branch is up to date with `main`
+2. Fill out the PR template completely — incomplete PRs may be closed
+3. Link the issue using `Closes #<issue-number>` in the PR description
+4. One logical change per PR — don't bundle unrelated fixes
+5. All PRs need at least one review before merge
+6. A maintainer will merge once approved
 
 ### PR Checklist
 
-- [ ] My code follows the project's code style
-- [ ] I have tested my changes locally
-- [ ] I have added/updated tests if applicable
-- [ ] I have updated documentation if applicable
-- [ ] The PR title follows Conventional Commits format
+- [ ] Code works locally
+- [ ] No `console.log` left in `src/`
+- [ ] If schema changed — both `schema.sql` and a new migration file are included
+- [ ] Docs updated if needed
+- [ ] PR title follows Conventional Commits format
 
 ---
 
 ## Issue Guidelines
 
-- Search existing issues before opening a new one to avoid duplicates.
-- Use the correct template (Bug Report / Feature Request).
-- Be specific. Vague issues are hard to act on and may be closed.
-- If you open an issue and then want to fix it yourself, say so in the issue.
+- Search before opening — check if the issue already exists
+- Use the correct template (Bug Report / Feature Request / Good First Issue / Docs)
+- Be specific — vague issues are hard to act on
+- If you want to fix an issue you opened, say so in the issue itself
 
 ---
 
 ## Good First Issues
 
 New to open source? Start here:
-- Issues labelled [`good first issue`](../../issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22)
-- Anything in the docs that's unclear to you as a newcomer
 
-If you're unsure where to start, drop a comment in [Discussions](../../discussions) and we'll help you find something.
+- [`good first issue`](../../issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) — beginner-friendly tasks with clear scope
+- [`documentation`](../../issues?q=is%3Aissue+is%3Aopen+label%3Adocumentation) — great entry point if you're not ready to touch code yet
+
+Not sure where to start? Open a [Discussion](../../discussions) and ask — we'll help you find something.
 
 ---
 
 ## Questions?
 
-Open a [Discussion](../../discussions) rather than an issue for general questions. We're friendly, I promise.
+Open a [Discussion](../../discussions) rather than an issue for general questions. Issues are for bugs and feature requests — discussions are for everything else.
