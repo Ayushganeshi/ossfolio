@@ -8,6 +8,7 @@ jobs:
   welcome:
     name: Welcome new issue
     runs-on: ubuntu-latest
+    if: github.event.issue.user.type != 'Bot'
     permissions:
       issues: write
 
@@ -26,12 +27,12 @@ jobs:
               issue_number: issue.number,
               body: `Hey @${author}, thanks for opening this issue! 👋
 
-            Before anyone starts working on this, please **comment below explaining your approach** — what you plan to do and how you plan to do it.
+Before anyone starts working on this, please **comment below explaining your approach** — what you plan to do and how you plan to do it.
 
-            A few things to keep in mind:
-            - ✍️ **Write the explanation yourself** — don't paste AI-generated text. We want to understand how *you* think about the problem.
-            - 📌 **Wait to be assigned** before you start coding. This avoids two people solving the same thing at once.
-            - 📋 Read [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md) if you haven't already.
+A few things to keep in mind:
+- ✍️ **Write the explanation yourself** — don't paste AI-generated text. We want to understand how *you* think about the problem.
+- 📌 **Wait to be assigned** before you start coding. This avoids two people solving the same thing at once.
+- 📋 Read [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md) if you haven't already.
 
-            Once a maintainer reviews your approach and assigns the issue to you, you're good to go. Looking forward to it! 🚀`
+Once a maintainer reviews your approach and assigns the issue to you, you're good to go. Looking forward to it! 🚀`,
             });
