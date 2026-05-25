@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
@@ -39,12 +40,7 @@ export function Navbar({ onSignIn, onGetStarted }: NavbarProps) {
       >
         {/* Logo */}
         <Link href="/" style={{ display: "flex", alignItems: "center", textDecoration: "none" }}>
-          <span style={{ fontSize: "15px", fontWeight: 600, color: "#171717", letterSpacing: "-0.3px" }}>
-            OSS
-          </span>
-          <span style={{ fontSize: "15px", fontWeight: 600, color: "#3ecf8e", letterSpacing: "-0.3px" }}>
-            folio
-          </span>
+          <Image src="/logo.png" alt="OSSfolio" width={120} height={32} priority style={{ objectFit: "contain" }} />
         </Link>
 
         {/* Desktop nav links */}

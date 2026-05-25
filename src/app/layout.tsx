@@ -13,10 +13,16 @@ export const metadata: Metadata = {
   title: "OSSfolio — Your Open Source Identity",
   description:
     "A public profile platform for open-source contributors. Showcase your merged PRs, contribution streaks, orgs, and more at ossfolio.me/username.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
   openGraph: {
     title: "OSSfolio — Your Open Source Identity",
     description: "Your open-source identity, beyond GitHub.",
     type: "website",
+    images: ["/logo.png"],
   },
 };
 
