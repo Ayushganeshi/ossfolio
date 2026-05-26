@@ -9,6 +9,7 @@ Thank you for taking the time to contribute. OSSfolio is built entirely by contr
 - [Code of Conduct](#code-of-conduct)
 - [AI Policy](#ai-policy)
 - [How Can I Contribute?](#how-can-i-contribute)
+- [Design System](#design-system)
 - [Local Setup](#local-setup)
   - [1. Fork and clone](#1-fork-and-clone)
   - [2. Install dependencies](#2-install-dependencies)
@@ -68,6 +69,21 @@ Open an issue using the **Bug Report** template. Include steps to reproduce, exp
 
 ### Suggest a feature
 Open an issue using the **Feature Request** template. Describe the problem it solves, not just what you want built.
+
+---
+
+## Design System
+
+OSSfolio has a design system documented in [`DESIGN.md`](DESIGN.md). If your contribution touches any UI — a new component, a page section, buttons, colors, spacing, typography — you need to read it before you start coding.
+
+It covers:
+- Color tokens (primary green, ink, canvas, hairline values)
+- Typography scale and font weights
+- Spacing and border radius values
+- Button, card, input, and nav component specs
+- What to do and what not to do
+
+Following it keeps the UI consistent across contributions. PRs that introduce new colors, fonts, or spacing outside the design system will be asked to revise.
 
 ---
 
@@ -222,6 +238,8 @@ Examples:
 ## Pull Request Process
 
 **Please do not submit a PR without first being assigned to the issue.** Comment on the issue with your approach, wait to get assigned, then start working. Once you are assigned, feel free to prepare your PR.
+
+**You must use the PR template.** When you open a PR on GitHub, the description field is pre-filled with our template automatically. Do not delete it or replace it with your own format. Fill it out completely. PRs that skip the template or leave sections blank will be closed and asked to re-submit.
 
 Once you submit a PR, it will be reviewed within 12 hours. Please be patient and avoid pinging or sending repeated messages asking for a review before that time. You can send one follow-up message after 12 hours, but keep it to that.
 

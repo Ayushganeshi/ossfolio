@@ -19,6 +19,7 @@ A clear description of the task.
 3. 
 
 ## Resources
+- If this touches UI: read [`DESIGN.md`](../../DESIGN.md) first — it has all colors, spacing, typography, and component specs
 - 
 
 ## Definition of Done

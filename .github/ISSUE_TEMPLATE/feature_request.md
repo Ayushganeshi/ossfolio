@@ -17,3 +17,5 @@ Any alternative approaches you've thought about?
 
 ## Additional Context
 Mockups, links, or references that help explain the request.
+
+> If this is a UI feature, the contributor working on it should read [`DESIGN.md`](../../DESIGN.md) before starting. It has all the color tokens, spacing, typography, and component specs used across the project.

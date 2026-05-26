@@ -37,6 +37,7 @@ Closes #<!-- issue number -->
 - [ ] Code works locally and I have tested it
 - [ ] No `console.log` left in `src/`
 - [ ] If schema changed — both `schema.sql` and a new migration file are included
+- [ ] If this is a UI change — I read `DESIGN.md` and followed the design system (colors, spacing, typography, components)
 - [ ] Docs updated if needed
 - [ ] PR title follows Conventional Commits format (`feat:`, `fix:`, `docs:`, etc.)
 - [ ] This PR description is written in my own words
