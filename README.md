@@ -58,7 +58,7 @@ OSSfolio is built to fix that — for students applying to GSoC, for developers 
 | Frontend | Next.js · TypeScript · Tailwind CSS · shadcn/ui · Framer Motion |
 | Backend | Supabase · PostgreSQL |
 | Data | GitHub GraphQL API |
-| Hosting | Vercel |
+| Hosting | Cloudflare Pages |
 
 ---
 
