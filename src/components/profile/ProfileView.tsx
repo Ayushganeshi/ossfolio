@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import type { ContributorStats, Org, TechEntry, HeatmapWeek } from "@/types";
+import { computeStreaks } from "@/lib/mock";
 
 interface GitHubUser {
   login: string;
@@ -71,6 +72,9 @@ export function ProfileView({
       ? user.blog
       : `https://${user.blog}`
     : null;
+
+  // Current and longest contribution streaks derived from the heatmap calendar.
+  const { current: currentStreak, longest: longestStreak } = computeStreaks(heatmap);
 
   return (
     <div style={{ maxWidth: "56rem", margin: "0 auto", padding: "48px 20px 80px" }}>
@@ -344,6 +348,32 @@ export function ProfileView({
           <h2 style={{ fontSize: "16px", fontWeight: 600, color: "#171717", margin: "0 0 16px 0", letterSpacing: "-0.2px" }}>
             Contribution activity
           </h2>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: "8px", margin: "0 0 12px 0" }}>
+            {[
+              { label: "Current streak", value: currentStreak },
+              { label: "Longest streak", value: longestStreak },
+            ].map(({ label, value }) => (
+              <span
+                key={label}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "baseline",
+                  gap: "6px",
+                  padding: "6px 12px",
+                  border: "1px solid #ededed",
+                  borderRadius: "9999px",
+                  fontSize: "13px",
+                  color: "#707070",
+                  backgroundColor: "#fafafa",
+                }}
+              >
+                <strong style={{ color: "#171717", fontWeight: 600 }}>
+                  {value} {value === 1 ? "day" : "days"}
+                </strong>
+                {label}
+              </span>
+            ))}
+          </div>
           <div
             style={{
               display: "flex",
