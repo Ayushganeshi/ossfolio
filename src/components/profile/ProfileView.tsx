@@ -160,6 +160,51 @@ export function ProfileView({
             </a>
           </div>
 
+          {/* Share on X button — opens a pre-filled tweet with the contributor
+              score and profile URL, consistent with DESIGN.md button-secondary-outline */}
+          <div style={{ marginTop: "14px" }}>
+            <button
+              type="button"
+              onClick={() => {
+                const profileUrl = `https://ossfolio.vercel.app/${user.login}`;
+                const text = `My open source contributor score is ${score} on OSSfolio: ${profileUrl} #opensource`;
+                window.open(
+                  `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`,
+                  "_blank",
+                  "noopener,noreferrer"
+                );
+              }}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                padding: "7px 14px",
+                fontSize: "13px",
+                fontWeight: 500,
+                color: "#171717",
+                backgroundColor: "#ffffff",
+                border: "1px solid #c7c7c7",
+                borderRadius: "6px",
+                cursor: "pointer",
+                lineHeight: 1,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "#171717";
+                e.currentTarget.style.backgroundColor = "#fafafa";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "#c7c7c7";
+                e.currentTarget.style.backgroundColor = "#ffffff";
+              }}
+              aria-label="Share profile on X (Twitter)"
+            >
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+              Share on X
+            </button>
+          </div>
+
           <div style={{ display: "flex", gap: "20px", marginTop: "14px" }}>
             <span style={{ fontSize: "13px", color: "#707070" }}>
               <strong style={{ color: "#171717", fontWeight: 600 }}>{user.followers.toLocaleString("en-US")}</strong> followers
