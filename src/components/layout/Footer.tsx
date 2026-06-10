@@ -101,7 +101,7 @@ export function Footer() {
                             fontSize: "10px",
                             fontWeight: 600,
                             lineHeight: 1,
-                            color: "#ffffff",
+                            color: "#171717",
                             backgroundColor: "#3ecf8e",
                             borderRadius: "4px",
                             padding: "2px 5px",
